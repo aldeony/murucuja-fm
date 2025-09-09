@@ -26,62 +26,10 @@
 <script src="//cdn.cloud.caster.fm//widgets/embed.js"></script>
 
 
-  <div id="chat">
-    <h2>💬 Bate-Papo</h2>
-    <input type="text" id="usernameInput" placeholder="Digite seu nome de usuário...">
-    <div id="messages"></div>
-    <div id="input">
-      <input type="text" id="messageInput" placeholder="Digite sua mensagem...">
-      <button onclick="sendMessage()">Enviar</button>
-    </div>
-  </div>
-
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-
-  <script>
-    // Configuração do Firebase (substitua com suas credenciais)
-    const firebaseConfig = {
-      apiKey: "SUA_API_KEY",
-      authDomain: "SEU_DOMINIO.firebaseapp.com",
-      databaseURL: "https://SEU_DOMINIO.firebaseio.com",
-      projectId: "murucuja-fm",
-      storageBucket: "SEU_BUCKET.appspot.com",
-      messagingSenderId: "SEU_SENDER_ID",
-      appId: "SEU_APP_ID"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-
-    const messagesDiv = document.getElementById('messages');
-    const input = document.getElementById('messageInput');
-    const usernameInput = document.getElementById('usernameInput');
-
-    function sendMessage() {
-      const msg = input.value.trim();
-      const username = usernameInput.value.trim() || "Anônimo";
-      if (msg !== '') {
-        db.ref('chat').push({ user: username, text: msg });
-        input.value = '';
-      }
-    }
-
-    db.ref('chat').on('child_added', snapshot => {
-      const data = snapshot.val();
-      const p = document.createElement('p');
-      p.innerHTML = `<strong>${data.user}:</strong> ${data.text}`;
-      messagesDiv.appendChild(p);
-      messagesDiv.scrollTop = messagesDiv.scrollHeight;
-    });
-
-    input.addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') sendMessage();
-    });
-  </script>
+  <script src="https://uhchat.net/code.php?f=b771c3"></script>
 
 </body>
 
 </html>
+
 
