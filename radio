@@ -2,17 +2,16 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>Rádio & Chat com Nome de Usuário</title>
+  <title>Rádio & Chat em Tempo Real</title>
   <style>
     body { font-family: Arial; background: #f4f4f4; margin: 0; padding: 0; }
     header { background: #e81e4d; color: white; padding: 20px; text-align: center; }
     #player, #chat { width: 80%; margin: 20px auto; }
     #chat { background: white; padding: 10px; border-radius: 8px; border: 1px solid #ccc; }
     #messages { height: 300px; overflow-y: scroll; border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; }
-    #input { display: flex; gap: 5px; flex-wrap: wrap; }
-    #input input, #input button { padding: 10px; border-radius: 4px; border: 1px solid #ccc; }
-    #input button { background: #e81e4d; color: white; border: none; cursor: pointer; }
-    #usernameInput { width: 100%; margin-bottom: 10px; }
+    #input { display: flex; }
+    #input input { flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 4px; }
+    #input button { padding: 10px; background: #e81e4d; color: white; border: none; border-radius: 4px; margin-left: 5px; cursor: pointer; }
   </style>
 </head>
 <body>
@@ -32,7 +31,6 @@
 
   <div id="chat">
     <h2>💬 Bate-Papo</h2>
-    <input type="text" id="usernameInput" placeholder="Digite seu nome de usuário...">
     <div id="messages"></div>
     <div id="input">
       <input type="text" id="messageInput" placeholder="Digite sua mensagem...">
@@ -58,24 +56,21 @@
 
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
-
     const messagesDiv = document.getElementById('messages');
     const input = document.getElementById('messageInput');
-    const usernameInput = document.getElementById('usernameInput');
 
     function sendMessage() {
       const msg = input.value.trim();
-      const username = usernameInput.value.trim() || "Anônimo";
       if (msg !== '') {
-        db.ref('chat').push({ user: username, text: msg });
+        db.ref('chat').push({ text: msg });
         input.value = '';
       }
     }
 
     db.ref('chat').on('child_added', snapshot => {
-      const data = snapshot.val();
+      const msg = snapshot.val().text;
       const p = document.createElement('p');
-      p.innerHTML = `<strong>${data.user}:</strong> ${data.text}`;
+      p.textContent = msg;
       messagesDiv.appendChild(p);
       messagesDiv.scrollTop = messagesDiv.scrollHeight;
     });
